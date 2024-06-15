@@ -3,7 +3,10 @@
 FROM node:alpine
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /usr/src/app
+
+# Set the NODE_ENV to development
+ENV NODE_ENV=development
 
 # Copy package.json and package-lock.json
 COPY package*.json ./
@@ -17,5 +20,7 @@ COPY . .
 # Expose the port your backend will be running on
 EXPOSE 3000
 
+RUN npx prisma generate
+
 # Define the command to start your backend
-CMD [ "npm", "run", "start:dev" ]
+CMD [ "npm", "run", "start.dev" ]

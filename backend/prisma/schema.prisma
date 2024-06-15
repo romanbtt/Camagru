@@ -1,0 +1,56 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id         String    @id @default(cuid())
+  username   String    @unique
+  email      String    @unique
+  password   String
+  isVerified Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  picture    picture[]
+}
+
+model picture {
+  id        String    @id @default(cuid())
+  path      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  userId    String
+  user      user      @relation(fields: [userId], references: [id])
+  comments  comment[]
+  likes     String[]
+}
+
+model comment {
+  id        String   @id @default(cuid())
+  text      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  pictureId String?
+  picture   picture? @relation(fields: [pictureId], references: [id])
+}
+
+model token {
+  token     String   @id @default(cuid())
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model sticker {
+  id        String   @id @default(cuid())
+  category  String   @unique
+  paths     String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
