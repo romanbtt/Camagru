@@ -23,6 +23,7 @@ services:
     container_name: backend
     ports:
       - "3000:3000"
+      - "5555:5555" # for debugging (Prisma Studio)
     depends_on:
       - database
     restart: always

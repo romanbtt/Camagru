@@ -6,37 +6,43 @@ import {
     verifyEmail,
     requestResetPassword,
     resetPassword
-} from './handlers/auth'
+} from './handlers/authentification'
 
-const router = Router()
+const publicRouter = Router()
 
-// Auth Routes
+// Authentification routes
 
-router.post('/signin', [
-    check('username').not().isEmpty(),
+publicRouter.post('/signin', [
+    check('usernameOrEmail').not().isEmpty(),
     check('password').not().isEmpty(),
 ], signin);
 
-router.post('/signup', [
+publicRouter.post('/signup', [
     check('username').not().isEmpty(),
     check('email').not().isEmpty(),
     check('password').not().isEmpty(),
 ], signup);
 
-router.get('/verify-email', [
+publicRouter.get('/verify-email', [
     check('userId').not().isEmpty(),
     check('token').not().isEmpty()
 ], verifyEmail);
 
-router.post('/request-reset-password', [
+publicRouter.post('/request-reset-password', [
     check('email').not().isEmpty()
 ], requestResetPassword);
 
-router.post('/reset-password', [
+publicRouter.post('/reset-password', [
     check('token').not().isEmpty(),
     check('password').not().isEmpty()
 ], resetPassword);
 
+// Picture routes
 
-const unprotectedRouter = router;
-export default unprotectedRouter;
+// Sticker routes
+
+// User routes
+
+// Comment routes
+
+export default publicRouter;

@@ -223,13 +223,8 @@ export const resetPassword = async (req, res, next) => {
             }
         })
 
-        res.send(`
-            <html>
-                <body>
-                    <h1>Password reset successfully.</h1>
-                </body>
-            </html>
-        `);
+        res.json({ message: 'Password reset successfully.' })
+
     } catch (error) {
         next(error)
     }
