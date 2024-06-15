@@ -1,0 +1,50 @@
+#images {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1300px;
+    min-width: 420px;
+    margin-top: 50px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #E63946;
+    color: #F1FAEE;
+    font-size: larger;
+    height: 50px;
+    width: 100px;
+    cursor: pointer;
+    border: unset;
+}
+
+button:active:not(:disabled) {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+}
+
+button:disabled {
+    background-color: dimgrey;
+    color: white;
+    opacity: 1;
+    cursor: default;
+}
+
+#owner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    font-size: large;
+    font-weight: bold;
+    color: #E63946;
+}

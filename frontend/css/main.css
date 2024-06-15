@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Knewave&family=Poppins:wght@400;700&display=swap');
+
+html,
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    background-color: #F1FAEE;
+    box-sizing: border-box;
+}
+
+* {
+    box-sizing: inherit;
+}
+
+#content-wrap {
+    min-height: calc(100% - 60px);
+    overflow: hidden;
+}
+
+#content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: calc(100vh - 210px);
+}
+
+
+.layout-footer {
+    margin-top: auto;
+}
+
+footer {
+    background-color: #457B9D;
+    text-align: center;
+    padding: 10px 0;
+    height: 60px;
+    font-family: "Knewave", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    color: #E63946;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#easter-egg {
+    cursor: pointer;
+    user-select: none;
+}
+
+#easter-egg-title {
+    cursor: pointer;
+    user-select: none;
+}

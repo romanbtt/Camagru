@@ -1,0 +1,124 @@
+#webcam-container {
+    width: auto;
+    height: auto;
+    margin: 50px;
+}
+
+.webcam-border {
+    min-height: 500px;
+    min-width: 500px;
+    border-radius: 10px;
+    border: 2px solid #E63946;
+    overflow: hidden;
+    position: relative;
+}
+
+#webcam {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: block;
+    transform: scaleX(-1);
+    border-radius: 10px;
+}
+
+#picture {
+    width: 500px;
+    height: 500px;
+    margin: 0;
+    padding: 0;
+    display: block;
+    border-radius: 10px;
+}
+
+#overlay {
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    width: 200px;
+    height: 200px;
+    display: none;
+}
+
+#stickers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 25px;
+    margin: 10px 50px;
+}
+
+#stickers-container img {
+    width: 100px;
+    height: auto;
+}
+
+.containers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#category-title {
+    text-align: center;
+    font-family: "Knewave", system-ui;
+    color: #E63946;
+    font-size: 2rem;
+}
+
+#category-dropdown {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+#category-select {
+    background-color: #E63946;
+    border-color: #E63946;
+    width: 150px;
+    height: 40px;
+    color: white;
+    font-family: Poppins, sans-serif;
+    font-size: 1.5rem;
+    justify-content: center;
+}
+
+.loading-message,
+.error-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+button {
+    background-color: #E63946;
+    color: #F1FAEE;
+    font-size: larger;
+    height: 50px;
+    cursor: pointer;
+    border: unset;
+}
+
+button:active:not(:disabled) {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+}
+
+button:disabled {
+    background-color: dimgrey;
+    color: white;
+    opacity: 1;
+    cursor: default;
+}

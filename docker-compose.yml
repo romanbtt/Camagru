@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.${MODE}
+    container_name: frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+
+  backend:
+    build:
+      context: ./backend_V2
+      dockerfile: Dockerfile.${MODE}
+    user: node:node
+    container_name: backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./backend_v2:/app
+
+  database:
+    image: postgres:latest
+    container_name: database
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
+    env_file:
+      - .env

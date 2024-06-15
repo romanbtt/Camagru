@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Knewave&family=Poppins:wght@400;700&display=swap');
+
+html,
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    background-color: #F1FAEE;
+}
+
+img {
+    max-width: 200px;
+}
+
+.layout-title {
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.layout-title h1 {
+    font-family: "Knewave", system-ui;
+    color: #E63946;
+    font-size: 2.5rem;
+    user-select: none;
+}
+
+.layout-menu {
+    display: flex;
+    background-color: #457B9D;
+    height: 75px;
+}
+
+.layout-menu-links {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.layout-menu a {
+    text-decoration: none;
+    color: #F1FAEE;
+    font-size: 1.5rem;
+    transition: border-color 0.1s ease, background-color 0.1s ease;
+    height: 75px;
+    width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.layout-menu a:hover {
+    border-color: #E63946;
+    background-color: #E63946;
+}
+
+.selected {
+    border-color: #E63946;
+    background-color: #E63946;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 2rem;
+    cursor: pointer;
+    margin-right: 20px;
+
+}
+
+.hamburger div {
+    width: 2rem;
+    height: 0.25rem;
+    background: #E63946;
+}
+
+@media (max-width: 768px) {
+
+    .layout-menu {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        background-color: #457B9D;
+        height: 75px;
+    }
+
+    .layout-menu-links {
+        position: fixed;
+        top: 0;
+        right: -250px;
+        width: 250px;
+        height: calc(100vh - 150px);
+        background: #457B9D;
+        flex-direction: column;
+        transition: right 0.3s ease;
+        display: none;
+        margin-top: 150px;
+        z-index: 9999;
+    }
+
+    .layout-menu-links.open {
+        right: 0;
+        display: flex;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+}
+
+main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.layout-footer {
+    margin-top: auto;
+}
+
+footer {
+    background-color: #457B9D;
+    text-align: center;
+    padding: 10px 0;
+    height: 60px;
+    font-family: "Knewave", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    color: #E63946;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+}

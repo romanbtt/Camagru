@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Knewave&family=Poppins:wght@400;700&display=swap');
+
+.layout-title {
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.layout-title h1 {
+    margin: 0;
+    font-family: "Knewave", system-ui;
+    font-weight: 400;
+    font-style: normal;
+    color: #E63946;
+    font-size: 2.5rem;
+}
+
+.layout-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #457B9D;
+    height: 75px;
+}
+
+.layout-menu-links {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.layout-menu a {
+    text-decoration: none;
+    color: #F1FAEE;
+    font-size: 1.5rem;
+    border: 2px solid transparent;
+    transition: border-color 0.1s ease, background-color 0.1s ease;
+    height: 75px;
+    width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.layout-menu a:hover {
+    border-color: #E63946;
+    background-color: #E63946;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+    margin-right: 20px;
+
+}
+
+.hamburger div {
+    width: 2rem;
+    height: 0.25rem;
+    background: #E63946;
+}
+
+@media (max-width: 768px) {
+
+    .layout-menu {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        background-color: #457B9D;
+        height: 75px;
+    }
+
+    .layout-menu-links {
+        position: fixed;
+        top: 0;
+        right: -250px;
+        width: 250px;
+        height: calc(100vh - 150px);
+        background: #457B9D;
+        flex-direction: column;
+        transition: right 0.3s ease;
+        display: none;
+        margin-top: 150px;
+        z-index: 9999;
+    }
+
+    .layout-menu-links.open {
+        right: 0;
+        display: flex;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+}
