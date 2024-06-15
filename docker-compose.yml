@@ -5,7 +5,6 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile.${MODE}
     container_name: frontend
     ports:
       - "8080:80"
@@ -20,7 +19,6 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile.${MODE}
     user: node:node
     container_name: backend
     ports:

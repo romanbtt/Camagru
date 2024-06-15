@@ -4,8 +4,8 @@
   "description": "Server side for the camagru's app.",
   "main": "index.ts",
   "scripts": {
-    "start.dev": "nodemon",
-    "start.prod": "node server.js"
+    "start:development": "nodemon",
+    "start:production": "ts-node --transpile-only ./src/index.ts"
   },
   "author": "Roman Bitetti",
   "license": "ISC",
