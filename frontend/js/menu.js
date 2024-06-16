@@ -156,10 +156,3 @@ function signout() {
     updateMenu(false);
     loadPage('/html/feed.html');
 }
-
-function easterEgg() {
-    let easterEggTitle = document.getElementById('easter-egg-title');
-
-    indexTitle++;
-    easterEggTitle.textContent = camagrus[indexTitle % camagrus.length];
-}

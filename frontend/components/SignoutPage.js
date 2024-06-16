@@ -1,3 +1,5 @@
+import API from "../services/API.js";
+
 export class SignoutPage extends HTMLElement {
     constructor() {
         super();
@@ -14,12 +16,18 @@ export class SignoutPage extends HTMLElement {
         loadCSS();
     }
 
-    connectedCallback() {
-        app.store.myUser = null;
-        app.store.isSignedIn = false;
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('authTokenExpiresAt');
-        document.cookie = "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; Secure;";
+    async connectedCallback() {
+
+        const { ok, data } = await API.signout();
+        console.log("ok", ok);
+        console.log("data", data);
+
+        if (ok) {
+            app.store.myUser = null;
+            app.store.isSignedIn = false;
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('authTokenExpiresAt');
+        }
     }
 }
 

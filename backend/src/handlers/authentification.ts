@@ -1,7 +1,7 @@
 import prisma from '../db'
 import crypto from "crypto";
 import { validationResult } from 'express-validator'
-import { comparePasswords, createJWT, hashPassword } from '../modules/auth'
+import { comparePasswords, createJWT, hashPassword } from '../modules/authentification'
 import { sendEmail } from '../utils/email'
 
 export const signin = async (req, res, next) => {
@@ -10,12 +10,14 @@ export const signin = async (req, res, next) => {
         return res.status(400).json({ errors: errors.array() })
     }
 
+    const { usernameOrEmail } = req.body;
+
     try {
         const user = await prisma.user.findFirst({
             where: {
                 OR: [
-                    { username: req.body.username },
-                    { email: req.body.email }
+                    { username: usernameOrEmail },
+                    { email: usernameOrEmail }
                 ]
             }
         })
@@ -34,9 +36,15 @@ export const signin = async (req, res, next) => {
             return res.status(401).json({ message: 'Please check your email to verify your account.' })
         }
 
-        const token = createJWT(user, '1h')
+        const authToken = createJWT(user, '1h')
+        const authTokenExpiresAt = new Date(Date.now() + 60 * 60 * 1000);
         const refreshToken = createJWT(user, '1d')
-        res.json({ token, refreshToken })
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none'
+        });
+        res.json({ authToken, authTokenExpiresAt })
     } catch (error) {
         next(error)
     }
@@ -228,4 +236,10 @@ export const resetPassword = async (req, res, next) => {
     } catch (error) {
         next(error)
     }
+}
+
+
+export const signout = async (req, res, next) => {
+    res.clearCookie('refreshToken')
+    res.json({ message: 'Sign out successfully.' })
 }

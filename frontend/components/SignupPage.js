@@ -38,16 +38,14 @@ export class SignupPage extends HTMLElement {
     }
 
     setFormBindings(form) {
-        console.log(form)
         if (form) {
             form.addEventListener("submit", async event => {
                 event.preventDefault();
 
-                const response = await API.signup(this.#dataForm);
-                const data = await response.json();
+                const { ok, data } = await API.signup(this.#dataForm);
                 const info = this.root.getElementById('info-form');
 
-                if (response.ok) {
+                if (ok) {
                     info.style.color = 'green';
                     info.textContent = data.message;
                 } else {

@@ -23,6 +23,10 @@ const API = {
 
         const data = await response.json();
 
+        if (response.status === 401) {
+            setAuthToken({ authToken: null, authTokenExpiresAt: null });
+        }
+
         if (data.authToken && data.authTokenExpiresAt) {
             setAuthToken({ authToken: data.authToken, authTokenExpiresAt: data.authTokenExpiresAt });
         }
@@ -55,6 +59,14 @@ const API = {
             JSON.stringify({ username, email, password }),
             false
         );
+        return { ok, data };
+    },
+    signout: async function () {
+        const { ok, data } = await this.request(
+            "http://localhost:3000/api/private/signout",
+            "POST"
+        );
+
         return { ok, data };
     },
     authentificate: async function () {

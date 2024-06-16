@@ -1,8 +1,13 @@
 import { Router } from 'express'
+import {
+    signout
+} from './handlers/authentification'
 
 const privateRouter = Router()
 
 // Authentification routes
+
+privateRouter.post('/signout', signout);
 
 // Picture routes
 
