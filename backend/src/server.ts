@@ -6,7 +6,12 @@ import { authenticateToken } from './modules/auth'
 
 const app = express()
 
-app.use(cors())
+const corsOptions = {
+    origin: 'http://localhost:8080',
+    credentials: true,
+};
+
+app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
