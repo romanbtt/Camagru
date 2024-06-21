@@ -1,3 +1,4 @@
+import API from "../services/API.js";
 
 export class VerifyEmailPage extends HTMLElement {
 
@@ -26,8 +27,18 @@ export class VerifyEmailPage extends HTMLElement {
         const content = template.content.cloneNode(true);
         this.root.appendChild(content);
 
+        const token = this.dataset.token;
+
         const response = this.root.querySelector("#response");
-        response.innerHTML = "Verifying...";
+        const { ok, data } = await API.verifyEmail(token);
+
+        response.innerHTML = data.message;
+
+        if (ok) {
+            setTimeout(() => {
+                app.router.go("/signin", true);
+            }, 3000);
+        }
     }
 }
 

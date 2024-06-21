@@ -3,6 +3,7 @@ import crypto from "crypto";
 import { validationResult } from 'express-validator'
 import { comparePasswords, createJWT, hashPassword } from '../modules/authentification'
 import { sendEmail } from '../utils/email'
+import exp from 'constants';
 
 export const signin = async (req, res, next) => {
     const errors = validationResult(req);
@@ -42,7 +43,8 @@ export const signin = async (req, res, next) => {
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             secure: true,
-            sameSite: 'none'
+            sameSite: 'none',
+            expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
         });
         res.json({ authToken, authTokenExpiresAt })
     } catch (error) {
@@ -93,7 +95,7 @@ export const signup = async (req, res, next) => {
             }
         })
 
-        const link = `${process.env.BASE_URL}/verify-email/${user.id}/${token.token}`
+        const link = `${process.env.FE_URL}/verify-email.html?token=${token.token}`
         await sendEmail(user.email, user.username, 'Verify Your Account', link)
 
         res.status(201).json({ message: 'Account created. Please check your email to verify your account.' })
@@ -109,21 +111,10 @@ export const verifyEmail = async (req, res, next) => {
     }
 
     try {
-        const { userId, token } = req.body;
-
-        const user = await prisma.user.findUnique({
-            where: {
-                id: userId
-            }
-        })
-
-        if (!user) {
-            return res.status(404).json({ message: 'Invalid verification link' })
-        }
+        const { token } = req.params;
 
         const foundToken = await prisma.token.findFirst({
             where: {
-                userId: user.id,
                 token
             }
         })
@@ -134,7 +125,7 @@ export const verifyEmail = async (req, res, next) => {
 
         await prisma.user.update({
             where: {
-                id: user.id
+                id: foundToken.userId
             },
             data: {
                 isVerified: true
@@ -167,7 +158,7 @@ export const requestResetPassword = async (req, res, next) => {
         })
 
         if (!user) {
-            return res.status(404).json({ message: 'Account not found' })
+            return res.json({ message: 'Email sent! Check your inbox for password reset instructions.' })
         }
 
         let token = await prisma.token.findFirst({
@@ -185,10 +176,10 @@ export const requestResetPassword = async (req, res, next) => {
             })
         }
 
-        const link = `${process.env.BASE_URL}/reset-password/${token.token}`
+        const link = `${process.env.FE_URL}/reset-password.html?token=${token.token}`
         await sendEmail(user.email, user.username, 'Password reset', link)
 
-        res.json({ message: 'Email sent successfully' })
+        return res.json({ message: 'Email sent! Check your inbox for password reset instructions.' })
     } catch (error) {
         next(error)
     }
@@ -210,7 +201,7 @@ export const resetPassword = async (req, res, next) => {
         })
 
         if (!foundToken) {
-            return res.status(400).json({ message: 'Invalid reset password link' })
+            return res.status(400).json({ message: 'Invalid token. Please request a new password reset link and try again.' })
         }
 
         const hashedPassword = await hashPassword(password)
@@ -242,4 +233,8 @@ export const resetPassword = async (req, res, next) => {
 export const signout = async (req, res, next) => {
     res.clearCookie('refreshToken')
     res.json({ message: 'Sign out successfully.' })
+}
+
+export const authentificate = async (req, res, next) => {
+    res.json({ message: 'Authentificate successfully.' })
 }

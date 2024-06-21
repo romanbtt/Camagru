@@ -25,6 +25,7 @@ const API = {
 
         if (response.status === 401) {
             setAuthToken({ authToken: null, authTokenExpiresAt: null });
+            app.store.isSignedIn = false;
         }
 
         if (data.authToken && data.authTokenExpiresAt) {
@@ -71,14 +72,13 @@ const API = {
     },
     authentificate: async function () {
         const { ok, data } = await this.request(
-            "http://localhost:3000/api/secure/authentificate",
+            "http://localhost:3000/api/private/authentificate",
             "GET"
         );
 
         return { ok, data };
     },
     getPicturesByPage: async function (page, userId) {
-        console.log("page", page);
         const { ok, data } = await this.request(
             `http://localhost:3000/api/public/pictures/${page}${userId ? "/" + userId : ""}`,
             "GET",
@@ -87,7 +87,36 @@ const API = {
         );
 
         return { ok, data };
+    },
+    verifyEmail: async function (token) {
+        const { ok, data } = await this.request(
+            `http://localhost:3000/api/public/verify-email/${token}`,
+            "GET",
+            null,
+            false
+        );
+
+        return { ok, data };
+    },
+    requestResetPassword: async function ({ email }) {
+        const { ok, data } = await this.request(
+            `http://localhost:3000/api/public/request-reset-password`,
+            "POST",
+            JSON.stringify({ email }),
+            false
+        );
+
+        return { ok, data };
+    },
+    resetPassword: async function (token, password) {
+        const { ok, data } = await this.request(
+            `http://localhost:3000/api/public/reset-password`,
+            "POST",
+            JSON.stringify({ token, password }),
+            false
+        );
+
+        return { ok, data };
     }
 }
-
 export default API;

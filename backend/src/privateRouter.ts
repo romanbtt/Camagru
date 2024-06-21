@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import {
-    signout
+    signout,
+    authentificate
 } from './handlers/authentification'
 
 const privateRouter = Router()
@@ -8,6 +9,7 @@ const privateRouter = Router()
 // Authentification routes
 
 privateRouter.post('/signout', signout);
+privateRouter.get('/authentificate', authentificate);
 
 // Picture routes
 

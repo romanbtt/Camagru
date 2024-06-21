@@ -50,7 +50,7 @@ export const sendEmail = async (
         }
 
         await transporter.sendMail({
-            from: process.env.USER,
+            from: `"Camagru" <${process.env.USER}>`,
             to: email,
             subject,
             text: emailTemplate.replace('[User]', username).replace('[Verification Link]', verificationLink)

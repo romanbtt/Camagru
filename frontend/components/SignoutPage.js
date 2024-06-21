@@ -18,9 +18,7 @@ export class SignoutPage extends HTMLElement {
 
     async connectedCallback() {
 
-        const { ok, data } = await API.signout();
-        console.log("ok", ok);
-        console.log("data", data);
+        const { ok, _ } = await API.signout();
 
         if (ok) {
             app.store.myUser = null;

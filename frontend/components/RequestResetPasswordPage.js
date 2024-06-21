@@ -1,7 +1,9 @@
+import API from "../services/API.js";
+
 export class RequestResetPasswordPage extends HTMLElement {
 
     #dataForm = {
-        usernameOrEmail: ""
+        email: ""
     }
 
     constructor() {
@@ -33,14 +35,20 @@ export class RequestResetPasswordPage extends HTMLElement {
     }
 
     setFormBindings(form) {
-        console.log(form)
         if (form) {
-            form.addEventListener("submit", event => {
+            form.addEventListener("submit", async event => {
                 event.preventDefault();
 
-                this.#dataForm.usernameOrEmail = "";
-                this.#dataForm.password = "";
-                // TODO Send the data to the server
+                const { _, data } = await API.requestResetPassword(this.#dataForm);
+                const info = this.root.getElementById('info-form');
+
+                info.style.color = 'green';
+                info.textContent = data.message;
+                this.#dataForm.email = "";
+
+                setTimeout(() => {
+                    info.textContent = "‎";
+                }, 5000);
             })
 
             this.#dataForm = new Proxy(this.#dataForm, {

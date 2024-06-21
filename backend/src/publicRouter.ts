@@ -23,8 +23,7 @@ publicRouter.post('/signup', [
     check('password').not().isEmpty(),
 ], signup);
 
-publicRouter.get('/verify-email', [
-    check('userId').not().isEmpty(),
+publicRouter.get('/verify-email/:token', [
     check('token').not().isEmpty()
 ], verifyEmail);
 

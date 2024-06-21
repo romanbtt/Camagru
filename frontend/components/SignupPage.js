@@ -53,6 +53,10 @@ export class SignupPage extends HTMLElement {
                     info.textContent = data.message;
                 }
 
+                setTimeout(() => {
+                    info.textContent = "‎";
+                }, 5000);
+
                 this.#dataForm.username = "";
                 this.#dataForm.email = "";
                 this.#dataForm.password = "";

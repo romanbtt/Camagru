@@ -1,7 +1,6 @@
 
 const linkClickListener = (event) => {
     event.preventDefault();
-    console.log(Router.currentRoute)
     if (Router.currentRoute === "/camacraft") {
         const camacraftPage = document.querySelector("camacraft-page");
         camacraftPage.stopWebcam();
@@ -13,7 +12,6 @@ const linkClickListener = (event) => {
 };
 
 const popstateListener = (event) => {
-    console.log("popstateListener");
     Router.go(event.state.route, false);
 };
 
@@ -21,16 +19,6 @@ const addEventListenersToMenu = () => {
     document.querySelectorAll("a.navlink").forEach((link) => {
         link.addEventListener("click", linkClickListener);
     });
-
-    // if (Router.currentRoute === "/signin") {
-    //     if (Router.lastRoute !== "/signup") {
-    //         Router.go(Router.lastRoute || "/", true);
-    //     } else {
-    //         Router.go("/", true);
-    //     }
-    // } else if (Router.currentRoute === "/signout") {
-    //     Router.go("/", true);
-    // }
 };
 
 const Router = {
@@ -52,8 +40,6 @@ const Router = {
         Router.currentRoute = route;
 
         let pageElement = null;
-
-        console.log("route", route)
 
         switch (route) {
             case "/":
@@ -95,6 +81,7 @@ const Router = {
                 const queryString = window.location.search;
                 const urlParams = new URLSearchParams(queryString);
                 pageElement.dataset.token = urlParams.get("token");
+                history.pushState({}, '', window.location.pathname);
                 break;
             case "/verify-email.html":
                 console.log("verify-email.html")
@@ -103,6 +90,7 @@ const Router = {
                 const verifyEmailQueryString = window.location.search;
                 const verifyEmailUrlParams = new URLSearchParams(verifyEmailQueryString);
                 pageElement.dataset.token = verifyEmailUrlParams.get("token");
+                history.pushState({}, '', window.location.pathname);
                 break;
             default:
                 app.store.selectedMenu = "none";
