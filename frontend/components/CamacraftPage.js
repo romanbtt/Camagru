@@ -1,3 +1,5 @@
+import API from "../services/API.js";
+
 const ZOOM_STEP = 0.1;
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 2;
@@ -12,6 +14,7 @@ export class CamacraftPage extends HTMLElement {
         this.offsetX = 0;
         this.offsetY = 0;
         this.zoomLevel = 1;
+        this.currentStickerPath = null;
 
         const styles = document.createElement('style');
         this.root.appendChild(styles);
@@ -30,10 +33,12 @@ export class CamacraftPage extends HTMLElement {
     async startWebcam() {
         const videoElement = this.root.getElementById('webcam');
         const overlayElement = this.root.getElementById('overlay');
+        const captureButton = this.root.getElementById('capture-button');
 
         const handleDoubleClick = () => {
             overlayElement.style.display = 'none';
             overlayElement.src = '';
+            captureButton.disabled = true;
         }
 
         const handleMouseDown = (event) => {
@@ -94,7 +99,7 @@ export class CamacraftPage extends HTMLElement {
                 loadingMessage.style.display = 'none';
             };
         } catch (error) {
-            console.error('Error starting webcam:', error);
+            // Handle error
         }
     }
 
@@ -120,7 +125,6 @@ export class CamacraftPage extends HTMLElement {
         this.startWebcam();
 
 
-        console.log(app.store.stickers)
         app.store.stickers.forEach(category => {
             var option = document.createElement('option');
             option.value = category.category;
@@ -131,9 +135,9 @@ export class CamacraftPage extends HTMLElement {
         const updateStickers = () => {
             let selectedCategory = categoriesDropdown.value;
             let category = app.store.stickers.find(item => item.category === selectedCategory);
-            console.log(category);
             stickersContainer.innerHTML = '';
             categoryTitle.textContent = categoriesDropdown.value;
+            const captureButton = this.root.getElementById('capture-button');
 
             if (category) {
                 category.paths.forEach(path => {
@@ -146,6 +150,10 @@ export class CamacraftPage extends HTMLElement {
                             overlayElement.style.left = '150px';
                             overlayElement.style.top = '150px';
                             overlayElement.style.transform = 'scale(1)';
+                            this.currentStickerPath = path;
+                            if (app.store.isSignedIn) {
+                                captureButton.disabled = false;
+                            }
                         }
                     });
                     stickersContainer.appendChild(img);
@@ -157,7 +165,6 @@ export class CamacraftPage extends HTMLElement {
 
         categoriesDropdown.addEventListener('change', updateStickers);
 
-        let videoElement = this.root.getElementById('webcam');
         const uploadButton = this.root.getElementById('upload-file');
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
@@ -227,25 +234,45 @@ export class CamacraftPage extends HTMLElement {
 
         const captureButton = this.root.getElementById('capture-button');
 
-        captureButton.addEventListener('click', () => {
+        captureButton.addEventListener('click', async () => {
             const videoElement = this.root.getElementById('webcam');
             const imageElement = this.root.getElementById('picture');
             const overlayElement = this.root.getElementById('overlay');
 
             let sourceElement = videoElement || imageElement;
 
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = sourceElement.offsetWidth;
+            canvas.height = sourceElement.offsetHeight;
+
             const overlayRect = overlayElement.getBoundingClientRect();
             const videoRect = sourceElement.getBoundingClientRect();
+
+            if (sourceElement === videoElement) {
+                ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+            } else {
+                ctx.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
+            }
+
+            const capturedImageSrc = canvas.toDataURL('image/png');
+
+            console.log('Captured Image Source:', capturedImageSrc);
 
             const relativePosX = overlayRect.left - videoRect.left;
             const relativePosY = overlayRect.top - videoRect.top;
 
             console.log(relativePosX, relativePosY, this.zoomLevel);
 
+            console.log('Current Sticker Path:', this.currentStickerPath);
 
+            const { ok, data } = await API.createPicture(
+                capturedImageSrc, this.currentStickerPath, relativePosX, relativePosY, this.zoomLevel
+            );
         });
 
-        if (!app.store.isSignedIn) {
+        if (!app.store.isSignedIn || this.currentStickerPath === null) {
             captureButton.disabled = true;
         }
     }

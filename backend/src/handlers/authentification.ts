@@ -3,7 +3,6 @@ import crypto from "crypto";
 import { validationResult } from 'express-validator'
 import { comparePasswords, createJWT, hashPassword } from '../modules/authentification'
 import { sendEmail } from '../utils/email'
-import exp from 'constants';
 
 export const signin = async (req, res, next) => {
     const errors = validationResult(req);

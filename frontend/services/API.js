@@ -36,7 +36,7 @@ const API = {
     },
     fetchStickers: async function () {
         const { ok, data } = await this.request(
-            "http://localhost:3000/api/public/stickers/all",
+            "http://localhost:3000/api/public/stickers",
             "GET",
             null,
             false
@@ -114,6 +114,15 @@ const API = {
             "POST",
             JSON.stringify({ token, password }),
             false
+        );
+
+        return { ok, data };
+    },
+    createPicture: async function (picture, stickerPath, posX, posY, zoom) {
+        const { ok, data } = await this.request(
+            `http://localhost:3000/api/private/picture`,
+            "POST",
+            JSON.stringify({ picture, stickerPath, posX, posY, zoom })
         );
 
         return { ok, data };
