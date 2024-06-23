@@ -21,11 +21,11 @@ app.use(cookieParser())
 app.use('/api/private', authenticateToken, privateRouter)
 app.use('/api/public', publicRouter)
 app.use('/stickers', express.static('stickers'))
+app.use('/uploads', express.static('uploads'))
 
 populateStickers();
 
 app.use((err, req, res, next) => {
-    console.error(err)
     res.status(500).json({ message: 'Internal Server Error', error: err })
 })
 

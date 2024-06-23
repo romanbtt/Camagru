@@ -1,3 +1,5 @@
+import API from "../services/API.js";
+
 export class ImagePage extends HTMLElement {
 
     constructor() {
@@ -23,8 +25,7 @@ export class ImagePage extends HTMLElement {
     }
 
     async fetchImage(id) {
-        const response = await fetch(`http://localhost:3000/pictures/one/${id}`);
-        const data = await response.json();
+        const { ok, data } = await API.getPictureById(id);
 
         this.imageDiv.innerHTML = "";
 

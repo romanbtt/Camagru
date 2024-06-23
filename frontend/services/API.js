@@ -80,7 +80,7 @@ const API = {
     },
     getPicturesByPage: async function (page, userId) {
         const { ok, data } = await this.request(
-            `http://localhost:3000/api/public/pictures/${page}${userId ? "/" + userId : ""}`,
+            `http://localhost:3000/api/public/picture/page/${page}${userId ? "/" + userId : ""}`,
             "GET",
             null,
             false
@@ -123,6 +123,14 @@ const API = {
             `http://localhost:3000/api/private/picture`,
             "POST",
             JSON.stringify({ picture, stickerPath, posX, posY, zoom })
+        );
+
+        return { ok, data };
+    },
+    getPictureById: async function (pictureId) {
+        const { ok, data } = await this.request(
+            `http://localhost:3000/api/public/picture/one/${pictureId}`,
+            "GET"
         );
 
         return { ok, data };

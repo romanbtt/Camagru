@@ -31,7 +31,7 @@ export class FeedPage extends HTMLElement {
             this.imagesDiv.appendChild(image);
 
             image.addEventListener("click", () => {
-                app.router.go('/image-' + element._id, true);
+                app.router.go('/image-' + element.id, true);
             });
         });
 

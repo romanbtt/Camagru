@@ -53,7 +53,7 @@ const Router = {
             case "/mycamagrus":
                 pageElement = document.createElement("my-camagrus-page");
                 app.store.selectedMenu = "mycamagrus";
-                pageElement.dataset.myUser = app.store.myUser._id;
+                pageElement.dataset.myUser = app.store.myUser.id;
                 break;
             case "/profile":
                 pageElement = document.createElement("profile-page");

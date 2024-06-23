@@ -8,10 +8,8 @@ import {
     resetPassword
 } from './handlers/authentification'
 
-import { createPicture } from './handlers/picture'
-import upload from './utils/upload';
-
-
+// 
+import { getPicturesByPage, getPictureById } from './handlers/picture'
 import { getAllStickers } from './handlers/sticker'
 
 const publicRouter = Router()
@@ -43,6 +41,9 @@ publicRouter.post('/reset-password', [
 ], resetPassword);
 
 // Picture routes
+
+publicRouter.get('/picture/page/:page/:userId?', getPicturesByPage)
+publicRouter.get('/picture/one/:pictureId', getPictureById)
 
 // Sticker routes
 

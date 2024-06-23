@@ -33,7 +33,7 @@ const mergePicture = async (picturePath, stickerPath, posX, posY, zoom) => {
 
     try {
         await sharp(stickerAbsolutePath)
-            .resize(200 * zoom, 200 * zoom)
+            .resize(Math.round(200 * zoom), Math.round(200 * zoom))
             .toFile(tempStickerPath);
 
         await sharp(picturePath)
@@ -72,4 +72,54 @@ export const createPicture = async (req, res) => {
         }
     });
     return res.status(201).json(picture);
+};
+
+
+export const getPicturesByPage = async (req, res) => {
+    const page = parseInt(req.params.page)
+    const picturesPerPage = 6;
+    let pictures = [];
+    let totalPictures = 0;
+
+    if (req.params.userId) {
+        pictures = await prisma.picture.findMany({
+            where: {
+                userId: req.params.userId
+            },
+            orderBy: {
+                createdAt: 'desc'
+            },
+            take: picturesPerPage,
+            skip: (page - 1) * picturesPerPage
+        });
+        totalPictures = await prisma.picture.count({
+            where: {
+                userId: req.params.userId
+            }
+        });
+    } else {
+        pictures = await prisma.picture.findMany({
+            orderBy: {
+                createdAt: 'desc'
+            },
+            take: picturesPerPage,
+            skip: (page - 1) * picturesPerPage
+        });
+        totalPictures = await prisma.picture.count();
+    }
+
+    const hasNextPage = totalPictures > page * picturesPerPage;
+    const hasPrevPage = page > 1;
+
+    return res.status(200).json({ pictures, hasNextPage, hasPrevPage });
+};
+
+export const getPictureById = async (req, res) => {
+    const picture = await prisma.picture.findUnique({
+        where: {
+            id: req.params.pictureId
+        }
+    });
+
+    return res.status(200).json(picture);
 };
